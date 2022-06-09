@@ -1,37 +1,6 @@
 const listHelper = require('../utils/list_helper')
-const oneBlog = [{
-    'title': 'test3',
-    'author': 'author2',
-    'url': 'www.w2.w',
-    'likes': 10
-}]
-
-const threeBlogs = [
-    {
-        '_id': '629eec33bb2a8c4d857d2fa4',
-        'title': 'test1',
-        'author': 'author1',
-        'url': 'www.w.w',
-        'likes': 2,
-        '__v': 0
-    },
-    {
-        '_id': '629ef20a6b2d334df36cef66',
-        'title': 'test2',
-        'author': 'author1',
-        'url': 'www.w.w',
-        'likes': 0,
-        '__v': 0
-    },
-    {
-        '_id': '629ef6a35cfa94a8d7a66f24',
-        'title': 'test3',
-        'author': 'author2',
-        'url': 'www.w2.w',
-        'likes': 10,
-        '__v': 0
-    }
-]
+const oneBlog = listHelper.oneBlog
+const threeBlogs = listHelper.threeBlogs
 
 test('dummy returns one', () => {
     const blogs = []
