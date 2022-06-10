@@ -1,8 +1,11 @@
+const User = require('../models/users')
+
 const oneBlog = [{
     'title': 'test3',
     'author': 'author2',
     'url': 'www.w2.w',
-    'likes': 10
+    'likes': 10,
+    'user': '62a2eb96215573bd04c899b5'
 }]
 
 const threeBlogs = [
@@ -12,7 +15,7 @@ const threeBlogs = [
         'author': 'author1',
         'url': 'www.w.w',
         'likes': 2,
-        '__v': 0
+        'user': '62a2eb96215573bd04c899b5'
     },
     {
         '_id': '629ef20a6b2d334df36cef66',
@@ -20,7 +23,7 @@ const threeBlogs = [
         'author': 'author1',
         'url': 'www.w.w',
         'likes': 0,
-        '__v': 0
+        'user': '62a2eb96215573bd04c899b5'
     },
     {
         '_id': '629ef6a35cfa94a8d7a66f24',
@@ -28,7 +31,7 @@ const threeBlogs = [
         'author': 'author2',
         'url': 'www.w2.w',
         'likes': 10,
-        '__v': 0
+        'user': '62a2eb96215573bd04c899b5'
     }
 ]
 
@@ -73,20 +76,22 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
     const authors = [...new Set(blogs.map(blog => blog.author))]
-    console.log('authors', authors)
     const authorLikes = authors.map(author => {
         return {
             author: author, likes: totalLikes(blogs.filter(
                 blog => blog.author === author))
         }
     })
-    console.log(authorLikes)
 
     const mostLikes = authorLikes.map(ab => {
         return ab.likes
     })
-    console.log('mostlikes', mostLikes)
     return authorLikes[mostLikes.indexOf(Math.max(...mostLikes))]
+}
+
+const usersInDb = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
 }
 
 module.exports = {
@@ -96,5 +101,6 @@ module.exports = {
     mostBlogs,
     mostLikes,
     oneBlog,
-    threeBlogs
+    threeBlogs,
+    usersInDb
 }

@@ -1,8 +1,9 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: bearer 
 
 {
     "title": "test6",
-    "author": "authora",
-    "url": "dgajg"
+    "author": "Writer",
+    "url": "blogsite.yep"
 }
