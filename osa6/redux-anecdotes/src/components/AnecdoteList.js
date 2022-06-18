@@ -17,11 +17,9 @@ const Anecdotes = () => {
   const dispatch = useDispatch()
   
   const currentState = useSelector(state => state)
-  console.log('current state', currentState)
   const anecdotes = currentState.filter === ''
     ? currentState.anecdotes
     : currentState.anecdotes.filter(a => a.content.toLowerCase().includes(currentState.filter.toLowerCase()))
-  console.log('anecdotes', anecdotes)
   return(
     <ul>
       {anecdotes.map(anecdote =>
@@ -30,7 +28,7 @@ const Anecdotes = () => {
           anecdote={anecdote}
           handleClick={() => { 
             dispatch(addVote(anecdote.id))
-            dispatch(setNotification(`you voted '${anecdote.content}'`, 3))
+            dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
             }      
           }
         />
