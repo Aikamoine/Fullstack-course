@@ -1,58 +1,60 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+import { createSlice } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdotes'
 
+const anecdotesAtStart = []
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
   return {
     content: anecdote,
-    id: getId(),
+    //id: getId(),
     votes: 0
   }
 }
 
 const initialState = anecdotesAtStart.map(asObject)
 
-export const createAnecdote = (content) => { 
-  console.log('täällä käytiin')
-  return {
-    type: 'NEW',
-    data: {
-      content,
-      id: getId(),
-      votes: 0
-    }
-  }
-}
-
-export const vote = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
-  }
-}
-
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-  switch (action.type) {
-    case 'VOTE':
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    voteAnecdote(state, action) {
       const voted = state.map(
-        a => a.id === action.data.id ? {...a, votes: a.votes+1} : a
+        a => a.id === action.payload ? {...a, votes: a.votes+1} : a
       )
       return voted.sort((a, b) => b.votes - a.votes)
-    case 'NEW':
-      return [...state, action.data]
-    default: return state
+    },
+    newAnecdote(state, action) {
+      console.log('action', action.payload)
+      state.push(action.payload)
+    },
+    setAnecdotes(state, action) {
+      return action.payload
+    }
   }
+})
 
-  
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch(setAnecdotes(anecdotes))
+  }
 }
 
-export default reducer
+export const createNew = content => {
+  return async dispatch => {
+    const newOne = await anecdoteService.createNew(content)
+    console.log('new anecdote', newOne)
+    dispatch(newAnecdote(newOne))
+  }
+}
+
+export const addVote = content => {
+  return async dispatch => {
+    const voted = await anecdoteService.vote(content)
+    dispatch(voteAnecdote(content))
+  }
+}
+
+export const { voteAnecdote, newAnecdote, setAnecdotes } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
