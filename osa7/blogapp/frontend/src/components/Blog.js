@@ -1,50 +1,46 @@
-import { useState } from 'react'
+//import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link, useParams } from 'react-router-dom'
 
-const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
-  if (!visible) return null
+export const BlogDetails = ({ blogs, likeBlog, removeBlog, user }) => {
+  const blogId = useParams().id
+
+  const blog = blogs.find(({ id }) => id === blogId)
+  if (!blog) {
+    return (
+      <div>no such blog id!</div>
+    )
+  }
 
   const addedBy = blog.user && blog.user.name ? blog.user.name : 'anonymous'
+  const own = blog.user && user.username === blog.user.username
 
   return (
     <div>
-      <div>
-        <a href={blog.url}>{blog.url}</a>
-      </div>
-      <div>
-        {blog.likes} likes <button onClick={() => likeBlog(blog.id)}>like</button>
-      </div>
-      {addedBy}
-      {own && <button onClick={() => removeBlog(blog.id)}>
-        remove
-      </button>}
+      <h2>
+        {blog.title}
+      </h2>
+      <div>{blog.url}</div>
+      <div>{blog.likes} likes <button onClick={() => likeBlog(blog.id)}>like</button></div>
+      <div>added by {addedBy}</div>
+      {own && <button onClick={() => removeBlog(blog.id)}>remove</button>}
     </div>
   )
 }
 
-const Blog = ({ blog, likeBlog, removeBlog, user }) => {
-  const [visible, setVisible] = useState(false)
-
+const Blog = ({ blog }) => {
+  /*
   const style = {
     padding: 3,
     margin: 5,
     borderStyle: 'solid',
     borderWidth: 1,
   }
+  */
 
   return (
-    <div style={style} className='blog'>
-      {blog.title} {blog.author}
-      <button onClick={() => setVisible(!visible)}>
-        {visible ? 'hide' : 'view'}
-      </button>
-      <BlogDetails
-        blog={blog}
-        visible={visible}
-        likeBlog={likeBlog}
-        removeBlog={removeBlog}
-        own={blog.user && user.username === blog.user.username}
-      />
+    <div className="blog">
+      <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
     </div>
   )
 }
@@ -58,7 +54,7 @@ Blog.propTypes = {
     user: PropTypes.shape({
       username: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-    })
+    }),
   }).isRequired,
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,

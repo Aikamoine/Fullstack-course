@@ -12,14 +12,10 @@ describe('blog', () => {
       title: 'Testing is easy',
       author: 'Kalle Ilves',
       url: 'http://lynx.fi/testing',
-      likes: 5
+      likes: 5,
     }
 
-    render(<Blog
-      blog={blog}
-      likeBlog={onLike}
-      removeBlog={() => { }}
-    />)
+    render(<Blog blog={blog} likeBlog={onLike} removeBlog={() => {}} />)
   })
 
   test('renders by default only title and author', () => {

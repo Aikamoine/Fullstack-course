@@ -10,7 +10,7 @@ const LoginForm = ({ onLogin }) => {
   }
 
   return (
-    <div>
+    <div className="container">
       <h2>Log in to application</h2>
 
       <form onSubmit={handleSubmit}>
@@ -19,7 +19,7 @@ const LoginForm = ({ onLogin }) => {
           <input
             value={username}
             onChange={({ target }) => setUsername(target.value)}
-            id='username'
+            id="username"
           />
         </div>
         <div>
