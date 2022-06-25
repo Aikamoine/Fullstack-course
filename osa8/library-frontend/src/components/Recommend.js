@@ -9,7 +9,7 @@ const Recommend = (props) => {
   const bookResult = useQuery(ALL_BOOKS, {
     variables: variables
   })
-  console.log('bookresult')
+
   if (result.loading || bookResult.loading) {
     return <div>loading...</div>
   }
