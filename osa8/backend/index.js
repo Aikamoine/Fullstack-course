@@ -90,7 +90,12 @@ const resolvers = {
     },
     allAuthors: async () => Author.find({}),
     me: (root, args, context) => {
-      return context.currentUser
+      console.log(context)
+      return {
+        id: context._id,
+        username: context.username,
+        favoriteGenre: context.favoriteGenre  
+      }
     }
   },
   Book: {
